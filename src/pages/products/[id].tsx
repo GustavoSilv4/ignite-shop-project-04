@@ -16,6 +16,13 @@ interface ProductsProps {
 }
 
 export default function Products({ product }: ProductsProps) {
+  const { isFallback } = useRouter()
+
+  if (isFallback) {
+    // Preciso para utilizar o fallback como true, recomendado colocar um skeleton loading.
+    return <p>LOADING...</p>
+  }
+
   return (
     <ProductContainer>
       <ImageContainer>
@@ -36,8 +43,14 @@ export default function Products({ product }: ProductsProps) {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
-    paths: [{ params: { id: 'prod_MO9SReB4TO17IS' } }],
-    fallback: false,
+    paths: [
+      {
+        params: {
+          id: 'prod_MO9SReB4TO17IS', // Os id dos produtos colocados aqui seram utilizados para gerar a page estatica na hora do build
+        },
+      },
+    ],
+    fallback: true, // quando true ele vai pegar o parametro da page e vai chamar o getStaticProps fazendo a requisicao novamente utilizando esse parametro, gerando nesta hora a pagina estatica com o parametro que não foi dado previamente.
   }
 }
 
