@@ -15,7 +15,7 @@ interface HomeProps {
     id: string
     name: string
     imageURL: string
-    price: number
+    price: string
   }[]
 }
 
@@ -55,13 +55,13 @@ export const getStaticProps: GetStaticProps = async () => {
     expand: ['data.default_price'],
   })
 
-  const products = response.data.map((products) => {
-    const price = products.default_price as Stripe.Price
+  const products = response.data.map((product) => {
+    const price = product.default_price as Stripe.Price
 
     return {
-      id: products.id,
-      name: products.name,
-      imageURL: products.images[0],
+      id: product.id,
+      name: product.name,
+      imageURL: product.images[0],
       price: new Intl.NumberFormat('pt-BR', {
         style: 'currency',
         currency: 'BRL',
