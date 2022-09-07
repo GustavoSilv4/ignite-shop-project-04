@@ -1,4 +1,4 @@
-import { GetServerSideProps } from 'next'
+import { GetStaticProps } from 'next'
 import Image from 'next/image'
 import { useKeenSlider } from 'keen-slider/react'
 
@@ -6,10 +6,6 @@ import Stripe from 'stripe'
 import { stripe } from '../lib/stripe'
 
 import { HomeContainer, Product } from '../styles/pages/home'
-
-import camisa from '../assets/camisas/Shirt.png'
-import camisa2 from '../assets/camisas/Shirt2.png'
-import camisa3 from '../assets/camisas/Shirt3.png'
 
 import 'keen-slider/keen-slider.min.css'
 
@@ -51,7 +47,7 @@ export default function Home({ products }: HomeProps) {
 // Só utilizamos essa função para fazer requisições para nossa aplicação quando precisamos necessáriamente que essa informação esteja disponivel -
 // - extamente na hora do carregamento da aplicação (Informações essas cruciais para Bots, Indexadores ou Cryles).
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const response = await stripe.products.list({
     expand: ['data.default_price'],
   })
@@ -71,5 +67,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
     props: {
       products,
     },
+    revalidate: 60 * 60 * 2, // 2 Horas
   }
 }
