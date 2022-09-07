@@ -1,4 +1,5 @@
 import { GetStaticProps } from 'next'
+import Head from 'next/head'
 import Image from 'next/image'
 import { useKeenSlider } from 'keen-slider/react'
 
@@ -28,23 +29,29 @@ export default function Home({ products }: HomeProps) {
   })
 
   return (
-    <HomeContainer ref={sliderRef} className="keen-slider">
-      {products.map((product) => {
-        return (
-          // prefetch como false previne que quando o elemento Link estive em tela o react faça a requisição da pagina sem nem está nela.
-          <Link key={product.id} href={`/products/${product.id}`} prefetch={false}>
-            <Product className="keen-slider__slide">
-              <Image src={product.imageURL} width={520} height={480} alt="" />
+    <>
+      <Head>
+        <title>Home | Ignite Shop</title>
+      </Head>
 
-              <footer>
-                <strong>{product.name}</strong>
-                <span>{product.price}</span>
-              </footer>
-            </Product>
-          </Link>
-        )
-      })}
-    </HomeContainer>
+      <HomeContainer ref={sliderRef} className="keen-slider">
+        {products.map((product) => {
+          return (
+            // prefetch como false previne que quando o elemento Link estive em tela o react faça a requisição da pagina sem nem está nela.
+            <Link key={product.id} href={`/products/${product.id}`} prefetch={false}>
+              <Product className="keen-slider__slide">
+                <Image src={product.imageURL} width={520} height={480} alt="" />
+
+                <footer>
+                  <strong>{product.name}</strong>
+                  <span>{product.price}</span>
+                </footer>
+              </Product>
+            </Link>
+          )
+        })}
+      </HomeContainer>
+    </>
   )
 }
 
